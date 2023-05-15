@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BSE Trade Simulator</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>CMP Of Stocks</h1>
+    <br>
+    <button type="submit" id="show1" style="text-align: center; margin: auto;" onclick="showcmp()">Show Current Market Price</button>
+    <div id="result1">
+      
+    </div>
+    <br>
+    <script>
+    async function showcmp() {
+      fetch('https://bse-backend-ra7g.onrender.com/showcmp',{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(async d => {
+        if (d.status == 200) {
+          const data = await d.json();
+          console.log(data);
+          let resultsdiv = document.getElementById('result1');
+          console.log(typeof(data));
+          if (Object.keys(data).length == 0) {
+            resultsdiv.innerHTML = `<div class="tab red">No funds Found</div>`
+          } else {
+            resultsdiv.innerHTML = ``
+            data.forEach(element => {
+              resultsdiv.innerHTML = resultsdiv.innerHTML + `
+                <div class="tab red">
+                  Stock Name = ${element.NAME} <br>
+                  Current Market Price = ${element.cmp} <br>
+                </div>
+              `
+            });
+          }
+        }
+      })
+    };
+</script>
+  </body>
+</html>
